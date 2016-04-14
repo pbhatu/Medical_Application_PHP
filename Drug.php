@@ -1,0 +1,45 @@
+<?php 
+$diss=$_POST["Disease"];
+session_start();
+//echo $diss;
+
+
+ini_set('display_errors','on');
+$db = mysqli_connect("localhost","root","root","pf");
+$flag=0;
+if(! $db ) {
+      die('Could not connect: ' . mysql_error());
+   }
+   else
+   {
+
+   	$sql=mysqli_query($db,"select * from medicines");
+   	while($row = mysqli_fetch_array($sql))
+    {
+    	if($diss==$row['diseases'])
+    	{
+    		$_SESSION['dis']=$row['diseases'];
+    		$_SESSION['med']=$row['drug'];
+    		//$_SESSION["img"]="pat";
+             $flag=1;
+             break;
+    	}
+    }
+    if($flag==1)
+    {
+       header('Location: Display_Drug.php');
+
+
+    }
+    else
+    {
+    	$message="Drug Not present in database";
+        echo "<script type='text/javascript'>alert('$message');
+         window.location.href='home.php';
+            </script>";
+    }
+
+
+   }
+
+ ?>
